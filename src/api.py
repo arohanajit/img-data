@@ -1,7 +1,18 @@
 import requests as requests
-import urllib.request as url
 import os
 import warnings
+from random import sample
+import shutil
+
+class MyError(Exception): 
+    def __init__(self, value): 
+        self.value = value 
+
+    def __str__(self): 
+        return(repr(self.value)) 
+  
+
+
 
 class Api:
     def __init__(self):
@@ -11,7 +22,7 @@ class Api:
         """
         pass
 
-    def pexels(self, query, api_key, count):
+    def pexels(self, query, api_key, count, ratio=0.2):
 
         self.__make_dataset(query)
 
@@ -31,7 +42,7 @@ class Api:
             data = result
             for i in range(len(data['photos'])):
                 img_data = requests.get(data['photos'][i]['src']['medium']).content
-                with open("dataset/{}/pexels{}.jpg".format(query,str(img)),'wb+') as f:
+                with open("dataset/{}/{}.jpg".format(query,str(img)),'wb+') as f:
                     f.write(img_data)
                 img+=1
                 if img%50==0:
@@ -43,10 +54,12 @@ class Api:
             if 'next_page' in list(data.keys()):
                 result = self.__request(data['next_page'],pexels_auth)
 
+        self.__divide_data(query,ratio)
+        
         print("Completed.")
 
 
-    def unsplash(self, query, api_key, count):
+    def unsplash(self, query, api_key, count, ratio=0.2):
         warnings.warn("Warning: Not having a production level API can limit the usage of API to 300-500 images per query.")
 
 
@@ -68,7 +81,7 @@ class Api:
             r = self.__request(url)
             for j in range(len(r['results'])):
                 data = requests.get(r['results'][j]['urls']['regular']).content
-                with open("datasets/{}/unsplash{}.jpg".format(query,str(img)),'wb+') as f:
+                with open("dataset/{}/{}.jpg".format(query,str(img)),'wb+') as f:
                     f.write(data)
                 img+=1
 
@@ -82,6 +95,7 @@ class Api:
                 f.close()
                 break
         
+        self.__divide_data(query,ratio)
         print("Completed.")
 
 
@@ -91,6 +105,8 @@ class Api:
     def __request(self, url, header=None):
         try:
             result = requests.get(url, timeout=15, headers=header)
+            if 'error' in list(result.json().keys()):
+                self.__raise_error(result.json()['error'],1)
             return result.json()
         except requests.exceptions.RequestException:
             print("Request failed check your internet connection")
@@ -104,8 +120,38 @@ class Api:
         if query not in os.listdir('dataset/'):
             os.mkdir('dataset/{}'.format(query))
 
+    def __divide_data(self,query,ratio):
+        src_path = 'dataset/{}'.format(query)
+        full_data = os.listdir(src_path)
+        test_size = int(ratio*len(full_data))
+        test = sample(full_data,test_size)
+        train = list(set(full_data) - set(test))
+
+        if 'train' not in os.listdir(src_path):
+            os.mkdir(src_path+'/train')
+        if 'test' not in os.listdir(src_path):
+            os.mkdir(src_path+'/test')
+
+        for i in train:
+            src = src_path+'/{}'.format(i)
+            dest = src_path+'/train/{}'.format(i)
+            shutil.move(src,dest)
+
+        for i in test:
+            src = src_path+'/{}'.format(i)
+            dest = src_path+'/test/{}'.format(i)
+            shutil.move(src,dest)
+
+        print(os.listdir(src_path))
+
+        
+    
+    def __raise_error(self,error,code):
+        class APIError(Exception):
+            pass
+
+        if code == 1:
+            raise APIError(error)
 
 
-a = Api()
-a.unsplash('Hello','iPRl31TlR_5aO_6pFl6UqjuMJTP_Vvxou-KFNBR-hW4',10)
 

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="img-data",
-    version="0.0.1",
+    version="0.0.6",
     author="Arohan Ajit",
     author_email="arohanajit232@gmail.com",
     description="Use Stock Images APIs to make image dataset",
@@ -13,11 +13,11 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/arohanajit/img-data",
     keywords='data api images photos',
-    install_requires=['requests','urllib','os','warnings'],
+    install_requires=['requests'],
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python",
-        "License :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 )
