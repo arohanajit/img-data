@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="img-data",
-    version="0.0.6",
+    name="img_data",
+    version="0.0.1",
     author="Arohan Ajit",
     author_email="arohanajit232@gmail.com",
     description="Use Stock Images APIs to make image dataset",

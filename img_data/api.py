@@ -4,16 +4,6 @@ import warnings
 from random import sample
 import shutil
 
-class MyError(Exception): 
-    def __init__(self, value): 
-        self.value = value 
-
-    def __str__(self): 
-        return(repr(self.value)) 
-  
-
-
-
 class Api:
     def __init__(self):
         """ All the requirements may differ function to function

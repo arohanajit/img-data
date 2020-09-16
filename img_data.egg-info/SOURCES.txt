@@ -1,7 +1,0 @@
-README.md
-setup.py
-img_data.egg-info/PKG-INFO
-img_data.egg-info/SOURCES.txt
-img_data.egg-info/dependency_links.txt
-img_data.egg-info/requires.txt
-img_data.egg-info/top_level.txt
