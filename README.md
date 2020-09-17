@@ -46,21 +46,64 @@ $ obj.pexels(query = query,
 #### File Structure for Data Download Functions
 ```bash
 - if `divide` is set to `True`:
-├── dataset
-│   ├── train
-│   │   ├── *.jpg
-│   ├── test
-│   │   ├── *.jpg
-└──├── val (if validation set to `True`)
-       ├── *.jpg
+└── dataset
+    ├── train
+    │   └── *.jpg
+    ├── test
+    │   └── *.jpg
+    └── val (if validation set to `True`)
+        └── *.jpg
 
 - if `divide` is set to `False`
 
-├── dataset
-│   ├── *.jpg
+└── dataset
+    └── *.jpg
 
 
 ```
+
+### Transforming Available Dataset into Train, Test, Validation
+Shuffles the data converts them into train/test/val modules.
+
+```
+$ import imgdata
+$ obj = imgdata.Api()
+$ obj.transform_data(path = data,path
+                    ratio = ratio,
+                    validation = True/False)
+```
+
+#### Arguments:
+- **path**: The path to the dataset.
+- **ratio**: Ratio of data for test and validation sets. (Default: 0.2)
+- **validation**: If set to true, files will be divided into train/test/val instead of train/test
+
+#### File Structure for Transforming data
+```bash
+- Initial File Structure
+
+└── dataset
+    ├── Class A
+    └──  Class B
+
+
+
+
+- Structure after transforming:
+└── dataset
+    ├── train
+    │   ├── Class A
+    │   └── Class B
+    ├── test
+    │   ├── Class A
+    │   └── Class B
+    └── validation (if set to True)
+        ├── Class A
+        └── Class B
+
+```
+
+
 
 ## License
 MIT License

@@ -124,30 +124,37 @@ class Api:
             if len(test[i])+len(valid[i])+len(train[i]) > (len(full_data)+len(test[i])):
                 self.__raise_error('Dataset too small to divide!',3)
 
+        os.mkdir(path+'/train')
+        os.mkdir(path+'/test')
+        if validation:
+            os.mkdir(path+'/val')
+        
         for i in classes:
             src = path + i
-                
-            os.mkdir(src+'/train')
-            os.mkdir(src+'/test')
+            os.mkdir(path+'/train/{}'.format(i))
+            os.mkdir(path+'/test/{}'.format(i))
             if validation:
-                os.mkdir(src+'/val')
+                os.mkdir(path+'/val/{}'.format(i))
+                
             
 
             for j in train[i]:
                 src_path = src + '/' + j
-                dest_path = src + '/train/' + j
+                dest_path = path + '/train/{}/{}'.format(i,j)
                 shutil.move(src_path,dest_path)
 
             for j in test[i]:
                 src_path = src + '/' + j
-                dest_path = src + '/test/' + j
+                dest_path = path + '/test/{}/{}'.format(i,j)
                 shutil.move(src_path,dest_path)
 
             if validation:
                 for j in valid[i]:
                     src_path = src + '/' + j
-                    dest_path = src + '/val/' + j
+                    dest_path = path + '/val/{}/{}'.format(i,j)
                     shutil.move(src_path,dest_path)
+
+            os.rmdir(path+'/{}'.format(i))
 
             print("Class :{}\nTrain: {}\nTest:{}\nValidation: {}".format(i,len(train[i]),len(test[i]),len(valid[i])))
 
@@ -184,14 +191,15 @@ class Api:
 
         test_size,valid_size = 0,0
         if valid:
-            ratio /= 2
             valid_size = int(ratio*(len(full_data)))
             test_size = int(ratio*(len(full_data)))
         else:
             test_size = int(ratio*(len(full_data)))
+
         test = sample(full_data,test_size)
+        full_data = list(set(full_data)-set(test))
         valid = sample(full_data,valid_size)
-        train = list(set(full_data) - set(test) - set(valid))
+        train = list(set(full_data) - set(valid))
 
         print(train,test,valid)
 
@@ -239,3 +247,5 @@ class Api:
             raise CustomError(error)
 
 
+a = Api()
+a.transform_data('dataset/',0.2,True)
