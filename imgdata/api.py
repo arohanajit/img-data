@@ -245,7 +245,3 @@ class Api:
             raise DataNotFoundError(error)
         elif code ==3:
             raise CustomError(error)
-
-
-a = Api()
-a.transform_data('dataset/',0.2,True)
