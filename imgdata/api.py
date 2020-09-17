@@ -201,7 +201,6 @@ class Api:
         valid = sample(full_data,valid_size)
         train = list(set(full_data) - set(valid))
 
-        print(train,test,valid)
 
         if 'train' not in os.listdir(src_path):
             os.mkdir(src_path+'/train')
