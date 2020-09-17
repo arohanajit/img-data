@@ -103,6 +103,9 @@ $ obj.transform_data(path = data path
 
 ```
 
+## Keypoints
+- The ratio is mentioned is total count of files for test and validation individually. Eg. Assuming a ratio of 0.2 and a total of 10 files, test will have 2, validation will have 2 and train will have 6 files.
+- The path for transforming data should be to folder containing the classes
 
 
 ## License
