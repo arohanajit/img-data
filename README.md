@@ -17,17 +17,50 @@ I am working on simplifying it further but as of now, using imgdata involves 3 s
 2. creating the object
 3. calling requisite function
 
+## Functions
+Following functions are available for use in the library:
+1. **pexels()** -> Download data from pexels API
+2. **unsplash()** -> Download data from unsplash API
+3. **transform_data()** -> Divide data at a provided path into train/test/validation
+
+### Downloading Images and Making Dataset
 ```
 $ import imgdata
 $ obj = imgdata.Api()
-$ obj.pexels(query,api_key,count,ratio)
+$ obj.pexels(query = query,
+            api_key = api_key,
+            count = count,
+            ratio = ratio,
+            divide = True/False,
+            validation = True/False)
 ```
 
-## Arguments
+#### Arguments for Data Download functions
 - **query**: You need to specify topic of image dataset. It can be a one word or multi word query. This will be the search query for API to work on.
 - **api_key**: You need to provide API key through which to access website's data. Keep in mind, some sites limit use of API. Program may generate an error if limits exceed. I'll try to generate a warning beforehand for such sites when they are used.
 - **count**: Total number of images needed. Again please check with site regarding the limit.
 - **ratio**: Ratio in which you needed images divided into train and test. Default ratio is 0.2.
+- **divide**: Setting this argument to `True` will automatically divide the downloaded images in train and test category
+- **validation**: Only applicable if `divide` is set to `True`. Separates data into train/test/validation instead of train/test.
+
+#### File Structure for Data Download Functions
+```bash
+- if `divide` is set to `True`:
+├── dataset
+│   ├── train
+│   │   ├── *.jpg
+│   ├── test
+│   │   ├── *.jpg
+└──├── val (if validation set to `True`)
+       ├── *.jpg
+
+- if `divide` is set to `False`
+
+├── dataset
+│   ├── *.jpg
+
+
+```
 
 ## License
 MIT License
