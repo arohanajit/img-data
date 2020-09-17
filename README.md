@@ -68,7 +68,7 @@ Shuffles the data converts them into train/test/val modules.
 ```
 $ import imgdata
 $ obj = imgdata.Api()
-$ obj.transform_data(path = data,path
+$ obj.transform_data(path = data path
                     ratio = ratio,
                     validation = True/False)
 ```
